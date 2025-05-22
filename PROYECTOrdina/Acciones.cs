@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PROYECTOrdina
 {
@@ -23,37 +24,75 @@ namespace PROYECTOrdina
 
         public bool AgregarAuto(int iD, string marca, string modelo, int anio, string color, double precio, string estado)
         {
+            try
+            {
+                Auto nuevoAuto = new Auto
+                {
+                    ID = iD,
+                    Marca = marca,
+                    Modelo = modelo,
+                    Anio = anio,
+                    Color = color,
+                    Precio = precio,
+                    Estado = estado
+                };
+
+                autos.Add(nuevoAuto);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                c.Correoo("Error al agregar auto: " + ex.ToString());
+                return false;
+            }
 
         }
 
+
+
         public bool EliminarAuto(int id)
         {
-            Auto autoAEliminar = autos.Find(a => a.ID == id);
-            if (autoAEliminar != null)
+            try
             {
-                autos.Remove(autoAEliminar);
-                return true;
+                Auto autoAEliminar = autos.Find(a => a.ID == id);
+                if (autoAEliminar != null)
+                {
+                    autos.Remove(autoAEliminar);
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                c.Correoo("Error al eliminar auto: " + ex.ToString());
+                return false;
+            }
         }
 
         public bool ActualizarAuto(int id, string nuevaMarca, string nuevoModelo, int nuevoAnio, string nuevoColor, double nuevoPrecio, string nuevoEstado)
         {
-            Auto autoAActualizar = autos.Find(a => a.ID == id);
-
-            if (autoAActualizar != null)
+            try
             {
-                autoAActualizar.Marca = nuevaMarca;
-                autoAActualizar.Modelo = nuevoModelo;
-                autoAActualizar.Anio = nuevoAnio;
-                autoAActualizar.Color = nuevoColor;
-                autoAActualizar.Precio = nuevoPrecio;
-                autoAActualizar.Estado = nuevoEstado;
+                Auto autoAActualizar = autos.Find(a => a.ID == id);
 
-                return true;
+                if (autoAActualizar != null)
+                {
+                    autoAActualizar.Marca = nuevaMarca;
+                    autoAActualizar.Modelo = nuevoModelo;
+                    autoAActualizar.Anio = nuevoAnio;
+                    autoAActualizar.Color = nuevoColor;
+                    autoAActualizar.Precio = nuevoPrecio;
+                    autoAActualizar.Estado = nuevoEstado;
+
+                    return true;
+                }
+                return false;
             }
-            return false;
-
+            catch (Exception ex)
+            {
+                c.Correoo("Error al actualizar auto: " + ex.ToString());
+                return false;
+            }
         }
 
         public bool Exportar()
@@ -104,12 +143,16 @@ namespace PROYECTOrdina
 
         public bool ImportarAuto()
         {
+
             try
             {
                 string rutaArchivo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Autos_Importacion.xlsx");
 
                 if (!File.Exists(rutaArchivo))
+                {
+                    MessageBox.Show("Archivo no encontrado en: " + rutaArchivo);
                     return false;
+                }
 
                 using (var workbook = new XLWorkbook(rutaArchivo))
                 {
@@ -125,7 +168,7 @@ namespace PROYECTOrdina
                             Modelo = fila.Cell(3).GetValue<string>(),
                             Anio = int.Parse(fila.Cell(4).GetValue<string>()),
                             Color = fila.Cell(5).GetValue<string>(),
-                            Precio = double.Parse(fila.Cell(6).GetValue<string>()),
+                            Precio = double.Parse(fila.Cell(6).GetValue<string>(), System.Globalization.CultureInfo.InvariantCulture),
                             Estado = fila.Cell(7).GetValue<string>()
                         };
 
@@ -137,11 +180,11 @@ namespace PROYECTOrdina
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Error: " + ex.Message);
                 c.Correoo(ex.ToString());
                 return false;
             }
         }
-
-
     }
 }
+

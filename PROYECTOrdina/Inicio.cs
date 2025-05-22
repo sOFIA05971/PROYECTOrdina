@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,7 +21,8 @@ namespace PROYECTOrdina
 
         private void btnMostrar_Click(object sender, EventArgs e)
         {
-
+            DGdatos.DataSource = null;  // para forzar refresco
+            DGdatos.DataSource = acc.Mostrar();
         }
 
         private void btnActualizar_Click(object sender, EventArgs e)
@@ -38,15 +40,75 @@ namespace PROYECTOrdina
 
                 if (acc.ActualizarAuto(id, marca, modelo, anio, color, precio, estado))
                 {
-                    MessageBox.Show("Actualizado con éxito");
-                    DGdatos.DataSource = null;
-                    DGdatos.DataSource = acc.Mostrar();
+                    MessageBox.Show("Auto actualizado con éxito.");
+                }
+                else
+                {
+                    MessageBox.Show("No se encontró un auto con ese ID");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Error al actualizar");
             }
+        }
+
+
+
+        private void btnImportar_Click(object sender, EventArgs e)
+        {
+            if (acc.ImportarAuto())
+            {
+                MessageBox.Show("Importado con exito...");
+                
+            }
+            else
+            {
+                MessageBox.Show("Fallo importando...");
+
+            }
+            DGdatos.DataSource = acc.Mostrar();
+
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            {
+                if (acc.AgregarAuto(Convert.ToInt32(tbxID.Text),tbxMarca.Text, tbxModelo.Text, Convert.ToInt32(tbxAnio.Text),tbxColor.Text,Convert.ToDouble(tbxPrecio.Text),tbxEstado.Text))
+                {
+                    MessageBox.Show("Agregado con éxito");
+                }
+                else
+                {
+                    MessageBox.Show("Fallo al agregar");
+                }
+
+                DGdatos.DataSource = null;
+                DGdatos.DataSource = acc.Mostrar();
+            }
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (acc.EliminarAuto(Convert.ToInt32(tbxID.Text)))
+
+            {
+                MessageBox.Show("Eliminado con exito");
+            }
+            else
+            {
+                MessageBox.Show("Fallo al eliminar");
+            }
+
+        }
+
+        private void btnExportar_Click(object sender, EventArgs e)
+        {
+            if (acc.Exportar())
+                MessageBox.Show("Exportado con exito...");
+            else
+                MessageBox.Show("No se exporto...");
+
         }
     }
 }

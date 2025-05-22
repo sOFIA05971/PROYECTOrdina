@@ -10,7 +10,12 @@ namespace PROYECTOrdina
     {
         List<Auto> Mostrar();
         bool EliminarAuto(int id);
-        bool 
-       
+        bool AgregarAuto(int iD, string marca, string modelo, int anio, string color, double precio, string estado);
+        bool ActualizarAuto(int id, string nuevaMarca, string nuevoModelo, int nuevoAnio, string nuevoColor, double nuevoPrecio, string nuevoEstado);
+        bool Exportar();
+        bool ImportarAuto();
+
+
+
     }
 }
