@@ -14,8 +14,9 @@ namespace PROYECTOrdina
         bool ActualizarAuto(int id, string nuevaMarca, string nuevoModelo, int nuevoAnio, string nuevoColor, double nuevoPrecio, string nuevoEstado);
         bool Exportar();
         bool ImportarAuto();
+        int ContadorDisponible();
 
-
+        
 
     }
 }

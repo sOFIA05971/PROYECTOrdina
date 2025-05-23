@@ -185,6 +185,20 @@ namespace PROYECTOrdina
                 return false;
             }
         }
+
+        public int Contadordisp()
+        {
+            int contador = 0;
+
+            foreach (var d in autos)
+            {
+                if (d.Estado == "Disponible")
+                {
+                    contador = contador + 1;
+                }
+            }
+            return contador;
+        }
     }
 }
 

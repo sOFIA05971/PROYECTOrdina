@@ -110,5 +110,10 @@ namespace PROYECTOrdina
                 MessageBox.Show("No se exporto...");
 
         }
+
+        private void btnContador_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show($"Tienes disponibles {acc.Contadordisp()} ");           
+        }
     }
 }
